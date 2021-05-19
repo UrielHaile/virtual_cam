@@ -122,8 +122,7 @@ def draw_face_mesh_scheme(
             pts[p[1, 0]],
             pts[p[2, 0]]
         ]], np.int32)
-        cv2.fillPoly(img, [np_poly], (254, 0, 253))
-        cv2.polylines(img, [np_poly], True, (255, 179, 0), 1)
+        cv2.polylines(img, [np_poly], True, (254, 0, 253), 1)
     return
 
 def draw_letter(
@@ -148,10 +147,18 @@ with pyvirtualcam.Camera(width=width, height=height, fps=30) as cam:
     green_crayola = (116, 181, 90)
     pink_light_carmine = (115, 98, 227)
     drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=2, color=green_crayola)
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(2)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     mode = 0
+    logo = cv2.imread('img/calzada.jpg')
+    scale_percent = 10 
+    width = int(logo.shape[1] * scale_percent / 100)
+    height = int(logo.shape[0] * scale_percent / 100)
+    dim = (width, height)  
+    logo_resized = cv2.resize(logo, dim, interpolation = cv2.INTER_AREA)
+    offset = 10
+    
     with mp_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5) as face_mesh:
         while cap.isOpened():
             success, image = cap.read()
@@ -196,7 +203,7 @@ with pyvirtualcam.Camera(width=width, height=height, fps=30) as cam:
                     draw_letter(
                         img=image,
                         pts=points2D)
-
+            image[offset:offset + logo_resized.shape[0], offset:offset + logo_resized.shape[1]] = logo_resized 
             cv2.imshow('Facemesh virtual camera', image)
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
             cam.send(image)
