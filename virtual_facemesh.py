@@ -147,7 +147,7 @@ with pyvirtualcam.Camera(width=width, height=height, fps=30) as cam:
     green_crayola = (116, 181, 90)
     pink_light_carmine = (115, 98, 227)
     drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=2, color=green_crayola)
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture(3)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     mode = 0
@@ -187,13 +187,13 @@ with pyvirtualcam.Camera(width=width, height=height, fps=30) as cam:
                         pts=points2D,
                         connections=FACE_CONNECTIONS_RIGHT_EYEBROW,
                         color=yellow_mikado,
-                        thickness=10)
+                        thickness=15)
                     draw_face_parts(
                         img=image,
                         pts=points2D,
                         connections=FACE_CONNECTIONS_LEFT_EYEBROW,
                         color=yellow_mikado,
-                        thickness=10)
+                        thickness=15)
                 elif mode == 3:
                     draw_landmarks(
                         image_rgb=image,
